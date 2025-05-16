@@ -58,14 +58,30 @@ Join the [Slack Developer Program](https://api.slack.com/developer-program) for 
 4. Install the app to your workspace
 5. Set the following environment variables:
    ```
+   # For Socket Mode (recommended for development)
    SLACK_BOT_TOKEN=xoxb-your-token
    SLACK_APP_TOKEN=xapp-your-app-token
+   
+   # For HTTP Mode (traditional deployment with public URL)
+   SLACK_BOT_TOKEN=xoxb-your-token
+   SLACK_SIGNING_SECRET=your-signing-secret
+   SLACK_REQUEST_URL=https://your-domain.com/slack/events
+   PORT=3000
    ```
 6. Run the app:
    ```
    npm install
    npm start
    ```
+
+## Deployment Options
+
+The bot now supports two deployment methods:
+
+1. **Socket Mode (Default)**: Uses WebSocket connections, no public URL needed
+2. **HTTP Mode**: Traditional method requiring a public URL
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions on both deployment methods.
 
 ## How It Works
 
@@ -103,5 +119,9 @@ The following documentation files provide details about recent changes and impro
 - [TIMEZONE-FIX.md](TIMEZONE-FIX.md) - Documentation of timezone issues fix and date format standardization
 - [CHANNEL-IMPROVEMENTS.md](CHANNEL-IMPROVEMENTS.md) - Details about improvements to channel selection
 - [MESSAGE-FORMAT-CHANGE.md](MESSAGE-FORMAT-CHANGE.md) - Information about message format changes
-- [IMPLEMENTATION.md](IMPLEMENTATION.md) - General implementation details and commands
 - [DEPLOYMENT.md](DEPLOYMENT.md) - Guide for deploying the bot using Socket Mode or HTTP mode
+- [HTTP-VERIFICATION.md](HTTP-VERIFICATION.md) - Details about HTTP mode verification challenge implementation
+- [VERIFICATION-TESTING.md](VERIFICATION-TESTING.md) - Guide for testing the verification challenge implementation
+- [HTTP-MODE-SETUP.md](HTTP-MODE-SETUP.md) - Step-by-step guide for setting up HTTP mode
+- [HTTP-MODE-TECHNICAL.md](HTTP-MODE-TECHNICAL.md) - Technical details of the HTTP mode implementation
+- [IMPLEMENTATION.md](IMPLEMENTATION.md) - General implementation details and commands

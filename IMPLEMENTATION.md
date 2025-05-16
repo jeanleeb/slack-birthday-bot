@@ -100,6 +100,21 @@ To address an issue where birthdays were being saved to the previous day due to 
 
 By using direct string manipulation for dates rather than JavaScript Date objects where timezone conversion could occur, we've ensured that birthdays are stored and displayed correctly regardless of the server's timezone.
 
+### Display Name Removal
+To simplify the app and standardize on Slack's native @mentions:
+
+1. **Removed display name functionality** throughout the codebase:
+   - Removed `/setname` command 
+   - Updated message formats to use @mentions only
+   - Removed display name fields from forms/modals
+   - Updated admin commands to not use display names
+   - Simplified database schema and queries
+
+2. **Date Format Standardization**:
+   - Changed from MM/DD to DD/MM format
+   - Fixed timezone issues with direct string parsing
+   - Updated validation logic and date format displays
+
 ### Flexible Deployment Support
 
 The bot now supports both Socket Mode and HTTP mode for deployment:
@@ -113,7 +128,27 @@ The bot now supports both Socket Mode and HTTP mode for deployment:
    - Uses traditional HTTP endpoints
    - Requires a public URL for your app
    - Uses `SLACK_BOT_TOKEN`, `SLACK_SIGNING_SECRET`, and `SLACK_REQUEST_URL`
+   - Automatically handles Slack's URL verification challenge
 
 The bot automatically detects which mode to use based on whether `SLACK_REQUEST_URL` is provided. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+
+#### HTTP Mode URL Verification
+
+When using HTTP mode, Slack requires verifying your endpoint URL. The app now includes:
+
+- Automatic detection of Slack verification challenge requests
+- Proper response with the challenge token to verify the endpoint
+- Custom ExpressReceiver middleware to handle the verification process
+- Detailed documentation about the verification process in [HTTP-VERIFICATION.md](HTTP-VERIFICATION.md)
+- Testing tools to verify the verification handler works correctly
+
+The verification happens when you first configure Event Subscriptions in your Slack app settings and enter your app's URL as the Request URL. Slack sends a request with a challenge parameter, and our app automatically responds correctly to complete the verification.
+
+Comprehensive documentation is available in:
+- [HTTP-MODE-SETUP.md](HTTP-MODE-SETUP.md) - Step-by-step setup guide
+- [HTTP-MODE-TECHNICAL.md](HTTP-MODE-TECHNICAL.md) - Technical implementation details
+- [VERIFICATION-TESTING.md](VERIFICATION-TESTING.md) - How to test the verification
+
+The app is now ready for deployment to a Slack workspace!
 
 The app is now ready for deployment to a Slack workspace!

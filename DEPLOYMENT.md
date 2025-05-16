@@ -45,6 +45,17 @@ HTTP mode requires your app to be accessible via a public URL. This is the tradi
    ```
 4. Deploy your app on a platform that gives you a public URL
 
+### Slack Verification Challenge
+
+When setting up Event Subscriptions in Slack, the API will send a verification challenge to your endpoint. The app is now configured to automatically handle this verification:
+
+1. When you enter your URL in the "Request URL" field in Slack's Event Subscriptions page, Slack will send a POST request with a `challenge` parameter
+2. The app will detect this verification request and automatically respond with the challenge value
+3. If verification is successful, you'll see a green checkmark in the Slack interface
+4. You can now enable the events you need in the "Subscribe to bot events" section
+
+For testing the verification challenge implementation, see [VERIFICATION-TESTING.md](VERIFICATION-TESTING.md)
+
 ## Switching Between Modes
 
 The app is now configured to automatically detect which mode to use:
