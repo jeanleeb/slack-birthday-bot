@@ -1,4 +1,4 @@
-# Birthday Bot Timezone Fix - Summary
+# Taq Birthday Bot Timezone Fix - Summary
 
 ## Problem
 Birthdays were being saved to the previous day due to timezone conversion issues when handling dates.

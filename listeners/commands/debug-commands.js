@@ -201,18 +201,16 @@ const debugSetTodayBirthdayCommandCallback = async ({ command, ack, respond, cli
     await Birthday.upsert({
       userId: command.user_id,
       username: command.user_name,
-      displayName,
+      displayName: null, // We no longer use display names in messages
       birthdate,
     });
 
     await respond({
-      text: `Your birthday has been set to today (${day}/${month}) with display name "${displayName}" for testing! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
+      text: `Your birthday has been set to today (${day}/${month}) for testing! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
       response_type: 'ephemeral',
     });
 
-    logger.info(
-      `DEBUG: Set test birthday for user ${command.user_name} to today (${birthdate}) with display name "${displayName}"`,
-    );
+    logger.info(`DEBUG: Set test birthday for user ${command.user_name} to today (${birthdate})`);
   } catch (error) {
     logger.error('Error in debugSetTodayBirthday command:', error);
     await respond({

@@ -34,7 +34,7 @@ const birthdayChannelModalCallback = async ({ ack, body, view, client, logger })
           await client.chat.postEphemeral({
             channel: body.user.id,
             user: body.user.id,
-            text: `I need to be invited to <#${channelId}> first. Please add me using \`/invite @slack-birthday-bot\` in that channel and try again.`,
+            text: `I need to be invited to <#${channelId}> first. Please add me using \`/invite @Taq Birthday Bot\` in that channel and try again.`,
           });
 
           return;

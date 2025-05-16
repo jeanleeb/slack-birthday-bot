@@ -1,6 +1,6 @@
 # Channel Selection Improvements
 
-This document outlines the changes made to improve the birthday channel selection functionality in the Slack Birthday Bot.
+This document outlines the changes made to improve the birthday channel selection functionality in the Taq Birthday Bot.
 
 ## Key Improvements
 

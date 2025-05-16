@@ -1,6 +1,6 @@
-# Slack Birthday Bot - Implementation Summary
+# Taq Birthday Bot - Implementation Summary
 
-The Slack Birthday Bot has been successfully implemented with the following features:
+The Taq Birthday Bot has been successfully implemented with the following features:
 
 ## Core Features
 - User birthday storage in SQLite database

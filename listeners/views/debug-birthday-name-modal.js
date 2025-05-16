@@ -2,8 +2,9 @@ const { Birthday } = require('../../database/models');
 
 const debugBirthdayNameModalCallback = async ({ ack, body, view, client, logger }) => {
   try {
-    // Get the display name from the input
-    const displayName = view.state.values.display_name_input.display_name_value.value;
+    // Note: We no longer use display name for messages, but keeping the field
+    // for backward compatibility with the database schema
+    const displayName = view.state.values.display_name_input.display_name_value.value || null;
 
     // Get the birthdate from private_metadata (passed from the command)
     const birthdate = view.private_metadata;
@@ -32,12 +33,10 @@ const debugBirthdayNameModalCallback = async ({ ack, body, view, client, logger 
     await client.chat.postEphemeral({
       channel: userId,
       user: userId,
-      text: `Your test birthday has been set to today (${day}/${month}) with display name "${displayName}"! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
+      text: `Your test birthday has been set to today (${day}/${month})! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
     });
 
-    logger.info(
-      `DEBUG: Set test birthday for user ${username} (${userId}): ${birthdate}, Display Name: ${displayName}`,
-    );
+    logger.info(`DEBUG: Set test birthday for user ${username} (${userId}): ${birthdate}`);
   } catch (error) {
     logger.error('Error in debugBirthdayNameModal:', error);
 

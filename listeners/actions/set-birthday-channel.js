@@ -42,7 +42,7 @@ const setBirthdayChannelActionCallback = async ({ body, ack, client, logger }) =
             elements: [
               {
                 type: 'mrkdwn',
-                text: '👉 Make sure to invite me to the channel first using `/invite @slack-birthday-bot`',
+                text: '👉 Make sure to invite me to the channel first using `/invite @Taq Birthday Bot`',
               },
             ],
           },

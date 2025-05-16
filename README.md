@@ -1,4 +1,4 @@
-# Slack Birthday Bot
+# Taq Birthday Bot
 
 A Slack bot that tracks birthdays of workspace members and sends automatic birthday messages.
 

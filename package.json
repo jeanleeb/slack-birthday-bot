@@ -1,7 +1,7 @@
 {
-  "name": "bolt-js-starter-template",
+  "name": "taq-birthday-bot",
   "version": "1.0.0",
-  "description": "A scaffold template for Slack apps",
+  "description": "A Slack app that tracks birthdays and sends automated birthday announcements",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
