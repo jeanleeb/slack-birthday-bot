@@ -5,31 +5,28 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
   try {
     await ack();
 
-    // Check if the command includes both date and name
+    // Check if the command includes a date
     const commandText = command.text.trim();
 
     // If empty, show help
     if (!commandText) {
       await respond({
-        text: 'Please provide your birthday in DD/MM format, followed by your full name. Example: `/setbirthday 25/12 John Doe`',
+        text: 'Please provide your birthday in DD/MM format. Example: `/setbirthday 25/12`',
         response_type: 'ephemeral',
       });
       return;
     }
 
-    // Extract date and name
+    // Extract date (ignore any additional text)
     const firstSpaceIndex = commandText.indexOf(' ');
     let dateInput;
-    let displayName;
 
     if (firstSpaceIndex === -1) {
       // Only date provided
       dateInput = commandText;
-      displayName = null;
     } else {
-      // Both date and name provided
+      // Take only the date part
       dateInput = commandText.substring(0, firstSpaceIndex);
-      displayName = commandText.substring(firstSpaceIndex + 1).trim();
     }
 
     // Parse the date (now in DD/MM format)
@@ -46,7 +43,7 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
       Number(day) > 31
     ) {
       await respond({
-        text: 'Please provide a valid date format (DD/MM). Example: `/setbirthday 25/12 John Doe`',
+        text: 'Please provide a valid date format (DD/MM). Example: `/setbirthday 25/12`',
         response_type: 'ephemeral',
       });
       return;
@@ -60,69 +57,20 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
     // Store the date in a consistent format that won't be affected by timezone
     const birthdate = `2000-${monthInt.toString().padStart(2, '0')}-${dayInt.toString().padStart(2, '0')}`;
 
-    // If no display name was provided, prompt the user for it
-    if (!displayName) {
-      // Open a modal to get the display name
-      await client.views.open({
-        trigger_id: command.trigger_id,
-        view: {
-          type: 'modal',
-          callback_id: 'birthday_name_modal',
-          private_metadata: birthdate, // Pass the birthdate to the modal submission handler
-          title: {
-            type: 'plain_text',
-            text: 'Add Your Display Name',
-          },
-          blocks: [
-            {
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: `Your birthday will be set to *${day}/${month}*. Please provide your full name so we can properly celebrate your birthday!`,
-              },
-            },
-            {
-              type: 'input',
-              block_id: 'display_name_input',
-              element: {
-                type: 'plain_text_input',
-                action_id: 'display_name_value',
-                placeholder: {
-                  type: 'plain_text',
-                  text: 'Your full name (e.g., John Doe)',
-                },
-              },
-              label: {
-                type: 'plain_text',
-                text: 'Full Name',
-              },
-            },
-          ],
-          submit: {
-            type: 'plain_text',
-            text: 'Save Birthday',
-          },
-        },
-      });
-      return;
-    }
-
-    // Save or update the birthday with display name
+    // Save or update the birthday
     await Birthday.upsert({
       userId: command.user_id,
       username: command.user_name,
-      displayName,
+      displayName: null, // We no longer use display names
       birthdate,
     });
 
     await respond({
-      text: `Your birthday has been set to ${day}/${month} with display name "${displayName}"! 🎂`,
+      text: `Your birthday has been set to ${day}/${month}! 🎂`,
       response_type: 'ephemeral',
     });
 
-    logger.info(
-      `Birthday set for user ${command.user_name} (${command.user_id}): ${birthdate}, Display Name: ${displayName}`,
-    );
+    logger.info(`Birthday set for user ${command.user_name} (${command.user_id}): ${birthdate}`);
   } catch (error) {
     logger.error('Error in setBirthdayCommand:', error);
     await respond({
@@ -223,8 +171,7 @@ const listBirthdaysCommandCallback = async ({ command, ack, respond, logger }) =
         const date = new Date(birthday.birthdate);
         const month = date.getMonth() + 1;
         const day = date.getDate();
-        const displayName = birthday.displayName ? ` (${birthday.displayName})` : '';
-        return `• <@${birthday.userId}>${displayName}: ${month}/${day}`;
+        return `• <@${birthday.userId}>: ${month}/${day}`;
       })
       .join('\n');
 
@@ -315,17 +262,15 @@ const nextBirthdaysCommandCallback = async ({ command, ack, respond, logger }) =
     // Format the birthdays list
     const birthdayList = nextBirthdays
       .map((birthday) => {
-        const displayName = birthday.displayName ? ` (${birthday.displayName})` : '';
-
         if (birthday.daysUntil === 0) {
-          return `• <@${birthday.userId}>${displayName}: *TODAY!* 🎉`;
+          return `• <@${birthday.userId}>: *TODAY!* 🎉`;
         }
 
         if (birthday.daysUntil === 1) {
-          return `• <@${birthday.userId}>${displayName}: *Tomorrow!* (${birthday.birthMonth}/${birthday.birthDay})`;
+          return `• <@${birthday.userId}>: *Tomorrow!* (${birthday.birthMonth}/${birthday.birthDay})`;
         }
 
-        return `• <@${birthday.userId}>${displayName}: In ${birthday.daysUntil} days (${birthday.birthMonth}/${birthday.birthDay})`;
+        return `• <@${birthday.userId}>: In ${birthday.daysUntil} days (${birthday.birthMonth}/${birthday.birthDay})`;
       })
       .join('\n');
 

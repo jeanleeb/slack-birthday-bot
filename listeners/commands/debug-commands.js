@@ -148,62 +148,20 @@ const debugSetTodayBirthdayCommandCallback = async ({ command, ack, respond, cli
     // Format the date as YYYY-MM-DD
     const birthdate = `2000-${month}-${day}`;
 
-    // Check if the command includes a display name
-    const displayName = command.text.trim() || null;
-
-    if (!displayName) {
-      // Open a modal to get the display name
-      await client.views.open({
-        trigger_id: command.trigger_id,
-        view: {
-          type: 'modal',
-          callback_id: 'debug_birthday_name_modal',
-          private_metadata: birthdate, // Pass the birthdate to the modal submission handler
-          title: {
-            type: 'plain_text',
-            text: 'Add Test Birthday Name',
-          },
-          blocks: [
-            {
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: `Your birthday will be set to today (*${month}/${day}*) for testing. Please provide a display name to use in the birthday message.`,
-              },
-            },
-            {
-              type: 'input',
-              block_id: 'display_name_input',
-              element: {
-                type: 'plain_text_input',
-                action_id: 'display_name_value',
-                placeholder: {
-                  type: 'plain_text',
-                  text: 'Your test display name (e.g., John Doe)',
-                },
-              },
-              label: {
-                type: 'plain_text',
-                text: 'Display Name',
-              },
-            },
-          ],
-          submit: {
-            type: 'plain_text',
-            text: 'Save Test Birthday',
-          },
-        },
-      });
-      return;
-    }
-
-    // Save or update the birthday with the display name
+    // Save the birthday for testing
     await Birthday.upsert({
       userId: command.user_id,
       username: command.user_name,
       displayName: null, // We no longer use display names in messages
       birthdate,
     });
+
+    await respond({
+      text: `Your birthday has been set to today (${day}/${month}) for testing! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
+      response_type: 'ephemeral',
+    });
+
+    logger.info(`DEBUG: Set test birthday for user ${command.user_name} to today (${birthdate})`);
 
     await respond({
       text: `Your birthday has been set to today (${day}/${month}) for testing! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,

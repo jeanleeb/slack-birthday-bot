@@ -66,15 +66,13 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
       if (userIsAdmin) {
         // For admins, show removal buttons next to each birthday
         nextBirthdays.forEach((birthday) => {
-          const displayName = birthday.displayName ? ` (${birthday.displayName})` : '';
-
           let birthdayText;
           if (birthday.daysUntil === 0) {
-            birthdayText = `<@${birthday.userId}>${displayName}: *TODAY!* 🎉`;
+            birthdayText = `<@${birthday.userId}>: *TODAY!* 🎉`;
           } else if (birthday.daysUntil === 1) {
-            birthdayText = `<@${birthday.userId}>${displayName}: *Tomorrow!* (${birthday.birthDay}/${birthday.birthMonth})`;
+            birthdayText = `<@${birthday.userId}>: *Tomorrow!* (${birthday.birthDay}/${birthday.birthMonth})`;
           } else {
-            birthdayText = `<@${birthday.userId}>${displayName}: In ${birthday.daysUntil} days (${birthday.birthDay}/${birthday.birthMonth})`;
+            birthdayText = `<@${birthday.userId}>: In ${birthday.daysUntil} days (${birthday.birthDay}/${birthday.birthMonth})`;
           }
 
           upcomingBirthdaysBlocks.push({
@@ -100,15 +98,13 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
         // For regular users, just show the text
         upcomingBirthdaysText = nextBirthdays
           .map((birthday) => {
-            const displayName = birthday.displayName ? ` (${birthday.displayName})` : '';
-
             if (birthday.daysUntil === 0) {
-              return `• <@${birthday.userId}>${displayName}: *TODAY!* 🎉`;
+              return `• <@${birthday.userId}>: *TODAY!* 🎉`;
             }
             if (birthday.daysUntil === 1) {
-              return `• <@${birthday.userId}>${displayName}: *Tomorrow!* (${birthday.birthDay}/${birthday.birthMonth})`;
+              return `• <@${birthday.userId}>: *Tomorrow!* (${birthday.birthDay}/${birthday.birthMonth})`;
             }
-            return `• <@${birthday.userId}>${displayName}: In ${birthday.daysUntil} days (${birthday.birthDay}/${birthday.birthMonth})`;
+            return `• <@${birthday.userId}>: In ${birthday.daysUntil} days (${birthday.birthDay}/${birthday.birthMonth})`;
           })
           .join('\n');
       }
@@ -151,15 +147,13 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
       const day = Number.parseInt(dateParts[2], 10);
 
       // Get display name info
-      const displayNameText = userBirthday.displayName
-        ? `\nDisplay name: *${userBirthday.displayName}*`
-        : '\nNo display name set. Use `/setbirthday DD/MM Your Name` to add one.';
+      const displayNameText = '';
 
       blocks.push({
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `Your birthday is set to *${day}/${month}*${displayNameText}`,
+          text: `Your birthday is set to *${day}/${month}*`,
         },
       });
 

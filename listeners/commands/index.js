@@ -7,7 +7,6 @@ const {
   removeBirthdayCommandCallback,
 } = require('./birthday-commands');
 const { debugCheckBirthdaysCommandCallback, debugSetTodayBirthdayCommandCallback } = require('./debug-commands');
-const { setDisplayNameCommandCallback } = require('./name-commands');
 const {
   adminSetBirthdayCommandCallback,
   adminListBirthdaysCommandCallback,
@@ -27,7 +26,6 @@ module.exports.register = (app) => {
   app.command('/listbirthdays', listBirthdaysCommandCallback);
   app.command('/nextbirthdays', nextBirthdaysCommandCallback);
   app.command('/removebirthday', removeBirthdayCommandCallback);
-  app.command('/setname', setDisplayNameCommandCallback);
 
   // Register admin commands
   app.command('/adminsetbirthday', adminSetBirthdayCommandCallback);

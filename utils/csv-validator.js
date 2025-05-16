@@ -33,7 +33,7 @@ const validateCsvFormat = (csvData) => {
   const header = lines[0].toLowerCase().trim();
   if (!header.startsWith('user id') || !header.includes('month') || !header.includes('day')) {
     results.isValid = false;
-    results.errors.push('CSV header must include "User ID", "Username", "Display Name", "Day", and "Month" columns');
+    results.errors.push('CSV header must include "User ID", "Username", "Day", and "Month" columns');
   }
 
   // Check each data row
@@ -43,9 +43,9 @@ const validateCsvFormat = (csvData) => {
 
     const parts = line.split(',');
 
-    // Check if line has enough columns (minimum 5)
-    if (parts.length < 5) {
-      results.errors.push(`Line ${i + 1}: Not enough columns (should be at least 5)`);
+    // Check if line has enough columns (minimum 4)
+    if (parts.length < 4) {
+      results.errors.push(`Line ${i + 1}: Not enough columns (should be at least 4)`);
       results.isValid = false;
       continue;
     }
@@ -58,53 +58,25 @@ const validateCsvFormat = (csvData) => {
       );
     }
 
-    // Process complex cases like quoted fields containing commas
-    let monthIndex = 2;
-    if (parts[2].startsWith('"') && !parts[2].endsWith('"')) {
-      // Find the closing quote
-      let foundClosingQuote = false;
-      for (let j = 3; j < parts.length; j++) {
-        if (parts[j].endsWith('"')) {
-          monthIndex = j + 1;
-          foundClosingQuote = true;
-          break;
-        }
-      }
+    // Check month/day values
+    const month = Number.parseInt(parts[2].trim(), 10);
 
-      if (!foundClosingQuote) {
-        results.warnings.push(`Line ${i + 1}: Unclosed quotes in display name`);
-      }
+    if (Number.isNaN(month) || month < 1 || month > 12) {
+      results.errors.push(`Line ${i + 1}: Invalid month (must be 1-12)`);
+      results.isValid = false;
     }
 
-    // Check month/day values if available
-    if (monthIndex < parts.length) {
-      const month = Number.parseInt(parts[monthIndex].trim(), 10);
+    const day = Number.parseInt(parts[3].trim(), 10);
 
-      if (Number.isNaN(month) || month < 1 || month > 12) {
-        results.errors.push(`Line ${i + 1}: Invalid month (must be 1-12)`);
-        results.isValid = false;
-      }
-
-      if (monthIndex + 1 < parts.length) {
-        const day = Number.parseInt(parts[monthIndex + 1].trim(), 10);
-
-        if (Number.isNaN(day) || day < 1 || day > 31) {
-          results.errors.push(`Line ${i + 1}: Invalid day (must be 1-31)`);
-          results.isValid = false;
-        } else if (month) {
-          // Check days per month (simplified)
-          const daysInMonth = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-          if (day > daysInMonth[month]) {
-            results.warnings.push(`Line ${i + 1}: Day ${day} may not be valid for month ${month}`);
-          }
-        }
-      } else {
-        results.errors.push(`Line ${i + 1}: Missing day value`);
-        results.isValid = false;
-      }
-    } else {
-      results.errors.push(`Line ${i + 1}: Missing month and day values`);
+    if (Number.isNaN(day) || day < 1 || day > 31) {
+      results.errors.push(`Line ${i + 1}: Invalid day (must be 1-31)`);
       results.isValid = false;
+    } else if (month) {
+      // Check days per month (simplified)
+      const daysInMonth = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      if (day > daysInMonth[month]) {
+        results.warnings.push(`Line ${i + 1}: Day ${day} may not be valid for month ${month}`);
+      }
     }
   }
 
@@ -117,10 +89,7 @@ const validateCsvFormat = (csvData) => {
  */
 const createCsvTemplate = () => {
   return (
-    'User ID,Username,Display Name,Day,Month\n' +
-    'U12345678,johndoe,John Doe,25,12\n' +
-    'U87654321,janedoe,"Doe, Jane",15,1\n' +
-    'UABCDEF12,bobsmith,Bob Smith,4,7'
+    'User ID,Username,Day,Month\n' + 'U12345678,johndoe,25,12\n' + 'U87654321,janedoe,15,1\n' + 'UABCDEF12,bobsmith,4,7'
   );
 };
 

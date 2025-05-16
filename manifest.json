@@ -66,11 +66,6 @@
                 "should_escape": false
             },
             {
-                "command": "/setname",
-                "description": "Set your display name for birthday messages",
-                "should_escape": false
-            },
-            {
                 "command": "/adminsetbirthday",
                 "description": "Admin: Set a birthday for another user",
                 "should_escape": false

@@ -10,13 +10,12 @@ The Taq Birthday Bot has been successfully implemented with the following featur
 - Commands to set, list, and manage birthdays
 
 ## Commands Implemented
-- `/setbirthday DD/MM [Name]` - Set your birthday with optional display name
-- `/setname Your Name` - Update your display name without changing date
+- `/setbirthday DD/MM` - Set your birthday
 - `/birthdaychannel` - Set the birthday announcement channel (opens a channel selector)
 - `/listbirthdays` - List all saved birthdays
 - `/nextbirthdays` - Show upcoming birthdays
 - `/removebirthday` - Remove your birthday
-- `/adminsetbirthday @user DD/MM [Name]` - Admin command to set birthday for any user
+- `/adminsetbirthday @user DD/MM` - Admin command to set birthday for any user
 - `/adminlistbirthdays` - Admin command to get detailed list of all birthdays
 - `/adminremovebirthday @user` - Admin command to remove birthday for any user
 - `/adminbulkremove` - Admin command to remove birthdays for multiple users at once

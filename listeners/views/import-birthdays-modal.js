@@ -66,8 +66,8 @@ const importBirthdaysModalCallback = async ({ ack, body, view, client, logger })
       const parts = line.split(',');
 
       // Basic validation of the CSV format
-      if (parts.length < 5) {
-        results.errors.push(`Line ${i + 1}: Not enough columns (should be 5)`);
+      if (parts.length < 4) {
+        results.errors.push(`Line ${i + 1}: Not enough columns (should be 4)`);
         continue;
       }
 
@@ -82,38 +82,8 @@ const importBirthdaysModalCallback = async ({ ack, body, view, client, logger })
           );
         }
 
-        // Handle quoted display names (might contain commas)
-        let displayNamePart = '';
-        let monthPartIndex = 2;
-
-        if (parts[2].startsWith('"')) {
-          // Find the closing quote
-          const displayNameParts = [];
-          let j = 2;
-
-          while (j < parts.length) {
-            displayNameParts.push(parts[j]);
-            if (parts[j].endsWith('"')) {
-              monthPartIndex = j + 1;
-              break;
-            }
-            j++;
-          }
-
-          if (monthPartIndex >= parts.length) {
-            results.errors.push(`Line ${i + 1}: Invalid format for display name`);
-            continue;
-          }
-
-          displayNamePart = displayNameParts.join(',');
-          // Remove surrounding quotes
-          displayNamePart = displayNamePart.replace(/^"/, '').replace(/"$/, '');
-        } else {
-          displayNamePart = parts[2].trim();
-        }
-
-        const monthPart = parts[monthPartIndex].trim();
-        const dayPart = parts[monthPartIndex + 1].trim();
+        const monthPart = parts[2].trim();
+        const dayPart = parts[3].trim();
 
         // Validate month and day
         const month = Number.parseInt(monthPart, 10);
@@ -137,7 +107,7 @@ const importBirthdaysModalCallback = async ({ ack, body, view, client, logger })
         await Birthday.upsert({
           userId: userIdPart,
           username: usernamePart,
-          displayName: displayNamePart || null,
+          displayName: null, // We no longer use display names
           birthdate,
         });
 

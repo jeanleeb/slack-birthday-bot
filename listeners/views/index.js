@@ -1,6 +1,5 @@
 const { sampleViewCallback } = require('./sample-view');
 const { updateBirthdayViewCallback } = require('./update-birthday-view');
-const { birthdayNameModalCallback } = require('./birthday-name-modal');
 const { debugBirthdayNameModalCallback } = require('./debug-birthday-name-modal');
 const { importBirthdaysModalCallback } = require('./import-birthdays-modal');
 const { validateCsvModalCallback } = require('./validate-csv-modal');
@@ -12,7 +11,6 @@ const { birthdayChannelModalCallback } = require('./birthday-channel-modal');
 module.exports.register = (app) => {
   app.view('sample_view_id', sampleViewCallback);
   app.view('update_birthday_view', updateBirthdayViewCallback);
-  app.view('birthday_name_modal', birthdayNameModalCallback);
   app.view('debug_birthday_name_modal', debugBirthdayNameModalCallback);
   app.view('import_birthdays_modal', importBirthdaysModalCallback);
   app.view('validate_csv_modal', validateCsvModalCallback);

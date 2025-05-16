@@ -22,19 +22,19 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
 
     if (!commandText) {
       await respond({
-        text: 'Please provide a user ID or mention, followed by the date (DD/MM) and optional display name. Example: `/adminsetbirthday @user 25/12 John Doe`',
+        text: 'Please provide a user ID or mention, followed by the date (DD/MM). Example: `/adminsetbirthday @user 25/12`',
         response_type: 'ephemeral',
       });
       return;
     }
 
-    // Parse the command text to extract user, date, and name
+    // Parse the command text to extract user and date
     // Handle different formats like @user, <@USER_ID>, or just USER_ID
     const parts = commandText.split(' ');
 
     if (parts.length < 2) {
       await respond({
-        text: 'Please provide both a user and a date. Example: `/adminsetbirthday @user 25/12 John Doe`',
+        text: 'Please provide both a user and a date. Example: `/adminsetbirthday @user 25/12`',
         response_type: 'ephemeral',
       });
       return;
@@ -89,7 +89,7 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
       Number(day) > 31
     ) {
       await respond({
-        text: 'Please provide a valid date format (DD/MM). Example: `/adminsetbirthday @user 25/12 John Doe`',
+        text: 'Please provide a valid date format (DD/MM). Example: `/adminsetbirthday @user 25/12`',
         response_type: 'ephemeral',
       });
       return;
@@ -99,9 +99,6 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
 
     // Store the date in a consistent format that won't be affected by timezone
     const birthdate = `2000-${monthInt.toString().padStart(2, '0')}-${dayInt.toString().padStart(2, '0')}`;
-
-    // Extract the display name (everything after the date)
-    const displayName = parts.slice(2).join(' ').trim() || null;
 
     // Get user info if possible
     let username = targetUserId; // Default to using the ID as the username
@@ -118,21 +115,18 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
     await Birthday.upsert({
       userId: targetUserId,
       username: username,
-      displayName: displayName,
+      displayName: null, // We no longer use display names
       birthdate,
     });
 
     const formattedDate = `${day}/${month}`;
-    const nameInfo = displayName ? ` with display name "${displayName}"` : '';
 
     await respond({
-      text: `Birthday for <@${targetUserId}> set to ${formattedDate}${nameInfo}! 🎂`,
+      text: `Birthday for <@${targetUserId}> set to ${formattedDate}! 🎂`,
       response_type: 'ephemeral',
     });
 
-    logger.info(
-      `Admin ${command.user_name} (${command.user_id}) set birthday for user ${targetUserId}: ${birthdate}, Display Name: ${displayName}`,
-    );
+    logger.info(`Admin ${command.user_name} (${command.user_id}) set birthday for user ${targetUserId}: ${birthdate}`);
   } catch (error) {
     logger.error('Error in adminSetBirthdayCommand:', error);
     await respond({
@@ -179,22 +173,20 @@ const adminListBirthdaysCommandCallback = async ({ command, ack, respond, logger
         const date = new Date(birthday.birthdate);
         const month = date.getMonth() + 1;
         const day = date.getDate();
-        const displayName = birthday.displayName ? ` (${birthday.displayName})` : '';
         const username = birthday.username ? ` - Username: ${birthday.username}` : '';
-        return `• <@${birthday.userId}>${displayName}${username}: ${day}/${month} - ID: ${birthday.userId}`;
+        return `• <@${birthday.userId}>${username}: ${day}/${month} - ID: ${birthday.userId}`;
       })
       .join('\n');
 
     // Create a CSV-formatted string for easy export
     const csvData = [
-      'User ID,Username,Display Name,Month,Day',
+      'User ID,Username,Month,Day',
       ...birthdays.map((birthday) => {
         const date = new Date(birthday.birthdate);
         const month = date.getMonth() + 1;
         const day = date.getDate();
-        const displayName = birthday.displayName || '';
         const username = birthday.username || '';
-        return `${birthday.userId},${username},"${displayName}",${month},${day}`;
+        return `${birthday.userId},${username},${month},${day}`;
       }),
     ].join('\n');
 
@@ -205,7 +197,6 @@ const adminListBirthdaysCommandCallback = async ({ command, ack, respond, logger
         return {
           userId: birthday.userId,
           username: birthday.username || '',
-          displayName: birthday.displayName || '',
           month: date.getMonth() + 1,
           day: date.getDate(),
         };
@@ -379,14 +370,14 @@ const adminImportBirthdaysCommandCallback = async ({ command, ack, respond, clie
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: '*Paste CSV data with the following columns:*\n`User ID,Username,Display Name,Month,Day`\n\nEach field should contain:\n• User ID: Slack user ID (starts with U)\n• Username: Slack username\n• Display Name: Name to use in birthday messages (can include spaces, use quotes if it contains commas)\n• Month: 1-12\n• Day: 1-31',
+              text: '*Paste CSV data with the following columns:*\n`User ID,Username,Month,Day`\n\nEach field should contain:\n• User ID: Slack user ID (starts with U)\n• Username: Slack username\n• Month: 1-12\n• Day: 1-31',
             },
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: '*Examples:*\n```\nUser ID,Username,Display Name,Month,Day\nU12345678,johndoe,John Doe,12,25\nU87654321,janedoe,"Doe, Jane",1,15\n```\n\nYou can get this format by using the `/adminlistbirthdays` command and copying the CSV data section.',
+              text: '*Examples:*\n```\nUser ID,Username,Month,Day\nU12345678,johndoe,12,25\nU87654321,janedoe,1,15\n```\n\nYou can get this format by using the `/adminlistbirthdays` command and copying the CSV data section.',
             },
           },
           {

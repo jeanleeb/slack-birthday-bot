@@ -2,10 +2,6 @@ const { Birthday } = require('../../database/models');
 
 const debugBirthdayNameModalCallback = async ({ ack, body, view, client, logger }) => {
   try {
-    // Note: We no longer use display name for messages, but keeping the field
-    // for backward compatibility with the database schema
-    const displayName = view.state.values.display_name_input.display_name_value.value || null;
-
     // Get the birthdate from private_metadata (passed from the command)
     const birthdate = view.private_metadata;
 
@@ -18,11 +14,11 @@ const debugBirthdayNameModalCallback = async ({ ack, body, view, client, logger 
     const userId = body.user.id;
     const username = body.user.name;
 
-    // Save or update the birthday with display name
+    // Save or update the birthday
     await Birthday.upsert({
       userId,
       username,
-      displayName,
+      displayName: null, // We no longer use display names
       birthdate,
     });
 

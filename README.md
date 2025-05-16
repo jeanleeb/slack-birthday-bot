@@ -5,7 +5,7 @@ A Slack bot that tracks birthdays of workspace members and sends automatic birth
 ## Features
 
 - 🎂 Save birthdays for all workspace members
-- 👤 Set display names for personalized birthday messages
+- 👥 Tag members with proper @mentions in birthday messages
 - 📅 Automatically send birthday messages to a channel of choice
 - 📋 List all saved birthdays
 - 🔜 See upcoming birthdays
@@ -15,8 +15,7 @@ A Slack bot that tracks birthdays of workspace members and sends automatic birth
 
 | Command             | Description                                          | Example                         |
 |---------------------|------------------------------------------------------|----------------------------------|
-| `/setbirthday`      | Set your birthday date with optional display name    | `/setbirthday 25/12 John Doe`    |
-| `/setname`          | Update your display name without changing your date  | `/setname John Doe`              |
+| `/setbirthday`      | Set your birthday date                               | `/setbirthday 25/12`             |
 | `/birthdaychannel`  | Set the channel for birthday announcements           | `/birthdaychannel`               |
 | `/listbirthdays`    | Show a list of all saved birthdays                   | `/listbirthdays`                 |
 | `/nextbirthdays`    | Show the next 5 upcoming birthdays                   | `/nextbirthdays`                 |
@@ -94,3 +93,14 @@ To restrict who can use admin commands:
 3. Only users with IDs in this list will be able to use admin commands
 
 The code in this project uses the Bolt for JavaScript framework to create a Slack app. For more information about Bolt for JavaScript, see [bolt js](https://api.slack.com/start/bolt/node-js).
+
+## Documentation
+
+The following documentation files provide details about recent changes and improvements:
+
+- [APP-RENAME.md](APP-RENAME.md) - Details about the app rename from "slack-birthday-bot" to "Taq Birthday Bot"
+- [DISPLAY-NAME-REMOVAL.md](DISPLAY-NAME-REMOVAL.md) - Information about the removal of display name functionality
+- [TIMEZONE-FIX.md](TIMEZONE-FIX.md) - Documentation of timezone issues fix and date format standardization
+- [CHANNEL-IMPROVEMENTS.md](CHANNEL-IMPROVEMENTS.md) - Details about improvements to channel selection
+- [MESSAGE-FORMAT-CHANGE.md](MESSAGE-FORMAT-CHANGE.md) - Information about message format changes
+- [IMPLEMENTATION.md](IMPLEMENTATION.md) - General implementation details and commands
