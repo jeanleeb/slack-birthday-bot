@@ -72,9 +72,9 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
           if (birthday.daysUntil === 0) {
             birthdayText = `<@${birthday.userId}>${displayName}: *TODAY!* 🎉`;
           } else if (birthday.daysUntil === 1) {
-            birthdayText = `<@${birthday.userId}>${displayName}: *Tomorrow!* (${birthday.birthMonth}/${birthday.birthDay})`;
+            birthdayText = `<@${birthday.userId}>${displayName}: *Tomorrow!* (${birthday.birthDay}/${birthday.birthMonth})`;
           } else {
-            birthdayText = `<@${birthday.userId}>${displayName}: In ${birthday.daysUntil} days (${birthday.birthMonth}/${birthday.birthDay})`;
+            birthdayText = `<@${birthday.userId}>${displayName}: In ${birthday.daysUntil} days (${birthday.birthDay}/${birthday.birthMonth})`;
           }
 
           upcomingBirthdaysBlocks.push({
@@ -106,9 +106,9 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
               return `• <@${birthday.userId}>${displayName}: *TODAY!* 🎉`;
             }
             if (birthday.daysUntil === 1) {
-              return `• <@${birthday.userId}>${displayName}: *Tomorrow!* (${birthday.birthMonth}/${birthday.birthDay})`;
+              return `• <@${birthday.userId}>${displayName}: *Tomorrow!* (${birthday.birthDay}/${birthday.birthMonth})`;
             }
-            return `• <@${birthday.userId}>${displayName}: In ${birthday.daysUntil} days (${birthday.birthMonth}/${birthday.birthDay})`;
+            return `• <@${birthday.userId}>${displayName}: In ${birthday.daysUntil} days (${birthday.birthDay}/${birthday.birthMonth})`;
           })
           .join('\n');
       }
@@ -145,20 +145,21 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
 
     // Add user's birthday section
     if (userBirthday) {
-      const date = new Date(userBirthday.birthdate);
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
+      // Extract month and day directly from the date string to avoid timezone issues
+      const dateParts = userBirthday.birthdate.split('-');
+      const month = Number.parseInt(dateParts[1], 10);
+      const day = Number.parseInt(dateParts[2], 10);
 
       // Get display name info
       const displayNameText = userBirthday.displayName
         ? `\nDisplay name: *${userBirthday.displayName}*`
-        : '\nNo display name set. Use `/setbirthday MM/DD Your Name` to add one.';
+        : '\nNo display name set. Use `/setbirthday DD/MM Your Name` to add one.';
 
       blocks.push({
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `Your birthday is set to *${month}/${day}*${displayNameText}`,
+          text: `Your birthday is set to *${day}/${month}*${displayNameText}`,
         },
       });
 
@@ -195,7 +196,7 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: "You haven't set your birthday yet. Use the `/setbirthday MM/DD` command to set it.",
+          text: "You haven't set your birthday yet. Use the `/setbirthday DD/MM` command to set it.",
         },
       });
     }
@@ -261,7 +262,7 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '• `/setbirthday MM/DD` - Set your birthday\n• `/birthdaychannel channel-name` - Set the birthday announcement channel\n• `/listbirthdays` - List all saved birthdays\n• `/nextbirthdays` - Show upcoming birthdays\n• `/removebirthday` - Remove your birthday',
+          text: '• `/setbirthday DD/MM` - Set your birthday\n• `/birthdaychannel channel-name` - Set the birthday announcement channel\n• `/listbirthdays` - List all saved birthdays\n• `/nextbirthdays` - Show upcoming birthdays\n• `/removebirthday` - Remove your birthday',
         },
       },
     );
@@ -290,7 +291,7 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: '• `/adminsetbirthday @user MM/DD Name` - Set birthday for another user\n• `/adminlistbirthdays` - Get detailed list of all birthdays\n• `/adminremovebirthday @user` - Remove birthday for another user\n• `/adminimportbirthdays` - Import multiple birthdays from CSV\n• `/manageadmins` - Manage admin privileges',
+            text: '• `/adminsetbirthday @user DD/MM Name` - Set birthday for another user\n• `/adminlistbirthdays` - Get detailed list of all birthdays\n• `/adminremovebirthday @user` - Remove birthday for another user\n• `/adminimportbirthdays` - Import multiple birthdays from CSV\n• `/manageadmins` - Manage admin privileges',
           },
         },
       );

@@ -164,7 +164,7 @@ const debugSetTodayBirthdayCommandCallback = async ({ command, ack, respond, cli
     });
 
     await respond({
-      text: `Your birthday has been set to today (${month}/${day}) with display name "${displayName}" for testing! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
+      text: `Your birthday has been set to today (${day}/${month}) with display name "${displayName}" for testing! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
       response_type: 'ephemeral',
     });
 

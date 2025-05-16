@@ -6,8 +6,8 @@ const updateBirthdayViewCallback = async ({ ack, body, view, client, logger }) =
     const birthdayValue = view.state.values.birthday_input.birthday_value.value;
     const displayName = view.state.values.display_name_input?.display_name_value?.value || null;
 
-    // Parse the date input (expecting MM/DD format)
-    const [month, day] = birthdayValue.split('/');
+    // Parse the date input (expecting DD/MM format)
+    const [day, month] = birthdayValue.split('/');
 
     // Validate the input
     if (
@@ -24,7 +24,7 @@ const updateBirthdayViewCallback = async ({ ack, body, view, client, logger }) =
       await ack({
         response_action: 'errors',
         errors: {
-          birthday_input: 'Please provide a valid date format (MM/DD). For example: 12/25',
+          birthday_input: 'Please provide a valid date format (DD/MM). For example: 25/12',
         },
       });
       return;
@@ -55,7 +55,7 @@ const updateBirthdayViewCallback = async ({ ack, body, view, client, logger }) =
     await client.chat.postEphemeral({
       channel: userId,
       user: userId,
-      text: `Your birthday has been updated to ${month}/${day}! 🎂`,
+      text: `Your birthday has been updated to ${day}/${month}! 🎂`,
     });
 
     logger.info(`Birthday updated for user ${body.user.name} (${userId}): ${birthdate}`);

@@ -32,7 +32,7 @@
             },
             {
                 "command": "/setbirthday",
-                "description": "Set your birthday (MM/DD format)",
+                "description": "Set your birthday (DD/MM format)",
                 "should_escape": false
             },
             {

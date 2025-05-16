@@ -33,7 +33,7 @@ const validateCsvFormat = (csvData) => {
   const header = lines[0].toLowerCase().trim();
   if (!header.startsWith('user id') || !header.includes('month') || !header.includes('day')) {
     results.isValid = false;
-    results.errors.push('CSV header must include "User ID", "Username", "Display Name", "Month", and "Day" columns');
+    results.errors.push('CSV header must include "User ID", "Username", "Display Name", "Day", and "Month" columns');
   }
 
   // Check each data row
@@ -117,10 +117,10 @@ const validateCsvFormat = (csvData) => {
  */
 const createCsvTemplate = () => {
   return (
-    'User ID,Username,Display Name,Month,Day\n' +
-    'U12345678,johndoe,John Doe,12,25\n' +
-    'U87654321,janedoe,"Doe, Jane",1,15\n' +
-    'UABCDEF12,bobsmith,Bob Smith,7,4'
+    'User ID,Username,Display Name,Day,Month\n' +
+    'U12345678,johndoe,John Doe,25,12\n' +
+    'U87654321,janedoe,"Doe, Jane",15,1\n' +
+    'UABCDEF12,bobsmith,Bob Smith,4,7'
   );
 };
 

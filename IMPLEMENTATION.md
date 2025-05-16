@@ -10,13 +10,13 @@ The Slack Birthday Bot has been successfully implemented with the following feat
 - Commands to set, list, and manage birthdays
 
 ## Commands Implemented
-- `/setbirthday MM/DD [Name]` - Set your birthday with optional display name
+- `/setbirthday DD/MM [Name]` - Set your birthday with optional display name
 - `/setname Your Name` - Update your display name without changing date
 - `/birthdaychannel channel-name` - Set the birthday announcement channel
 - `/listbirthdays` - List all saved birthdays
 - `/nextbirthdays` - Show upcoming birthdays
 - `/removebirthday` - Remove your birthday
-- `/adminsetbirthday @user MM/DD [Name]` - Admin command to set birthday for any user
+- `/adminsetbirthday @user DD/MM [Name]` - Admin command to set birthday for any user
 - `/adminlistbirthdays` - Admin command to get detailed list of all birthdays
 - `/adminremovebirthday @user` - Admin command to remove birthday for any user
 - `/adminbulkremove` - Admin command to remove birthdays for multiple users at once

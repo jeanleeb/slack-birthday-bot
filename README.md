@@ -15,7 +15,7 @@ A Slack bot that tracks birthdays of workspace members and sends automatic birth
 
 | Command             | Description                                          | Example                         |
 |---------------------|------------------------------------------------------|----------------------------------|
-| `/setbirthday`      | Set your birthday date with optional display name    | `/setbirthday 12/25 John Doe`    |
+| `/setbirthday`      | Set your birthday date with optional display name    | `/setbirthday 25/12 John Doe`    |
 | `/setname`          | Update your display name without changing your date  | `/setname John Doe`              |
 | `/birthdaychannel`  | Set the channel for birthday announcements           | `/birthdaychannel general`       |
 | `/listbirthdays`    | Show a list of all saved birthdays                   | `/listbirthdays`                 |
@@ -26,7 +26,7 @@ A Slack bot that tracks birthdays of workspace members and sends automatic birth
 
 | Command                 | Description                                     | Example                                    |
 |-------------------------|-------------------------------------------------|--------------------------------------------|
-| `/adminsetbirthday`     | Set a birthday for another user                 | `/adminsetbirthday @user 12/25 John Doe`   |
+| `/adminsetbirthday`     | Set a birthday for another user                 | `/adminsetbirthday @user 25/12 John Doe`   |
 | `/adminlistbirthdays`   | Get detailed list of all birthdays              | `/adminlistbirthdays`                      |
 | `/adminremovebirthday`  | Remove a birthday for another user              | `/adminremovebirthday @user`               |
 | `/adminbulkremove`     | Remove birthdays for multiple users at once      | `/adminbulkremove`                       |

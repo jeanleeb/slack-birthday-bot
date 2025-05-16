@@ -34,7 +34,7 @@ const birthdayNameModalCallback = async ({ ack, body, view, client, logger }) =>
     await client.chat.postEphemeral({
       channel: userId,
       user: userId,
-      text: `Your birthday has been set to ${month}/${day} with display name "${displayName}"! 🎂`,
+      text: `Your birthday has been set to ${day}/${month} with display name "${displayName}"! 🎂`,
     });
 
     logger.info(`Birthday set for user ${username} (${userId}): ${birthdate}, Display Name: ${displayName}`);

@@ -15,7 +15,7 @@ function setupBirthdayScheduler(app) {
       const month = (today.getMonth() + 1).toString().padStart(2, '0'); // JavaScript months are 0-indexed
       const day = today.getDate().toString().padStart(2, '0');
 
-      app.logger.info(`Checking for birthdays on ${month}/${day}...`);
+      app.logger.info(`Checking for birthdays on ${day}/${month}...`);
 
       // Find users whose birthdays are today
       const birthdays = await Birthday.findAll({

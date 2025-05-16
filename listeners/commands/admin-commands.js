@@ -22,7 +22,7 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
 
     if (!commandText) {
       await respond({
-        text: 'Please provide a user ID or mention, followed by the date (MM/DD) and optional display name. Example: `/adminsetbirthday @user 12/25 John Doe`',
+        text: 'Please provide a user ID or mention, followed by the date (DD/MM) and optional display name. Example: `/adminsetbirthday @user 25/12 John Doe`',
         response_type: 'ephemeral',
       });
       return;
@@ -34,7 +34,7 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
 
     if (parts.length < 2) {
       await respond({
-        text: 'Please provide both a user and a date. Example: `/adminsetbirthday @user 12/25 John Doe`',
+        text: 'Please provide both a user and a date. Example: `/adminsetbirthday @user 25/12 John Doe`',
         response_type: 'ephemeral',
       });
       return;
@@ -75,7 +75,7 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
 
     // Get the date part (second item in the array)
     const dateInput = parts[1];
-    const [month, day] = dateInput.split('/');
+    const [day, month] = dateInput.split('/');
 
     // Validate the date
     if (
@@ -89,13 +89,11 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
       Number(day) > 31
     ) {
       await respond({
-        text: 'Please provide a valid date format (MM/DD). Example: `/adminsetbirthday @user 12/25 John Doe`',
+        text: 'Please provide a valid date format (DD/MM). Example: `/adminsetbirthday @user 25/12 John Doe`',
         response_type: 'ephemeral',
       });
       return;
-    }
-
-    // Format the date as YYYY-MM-DD (year doesn't matter for birthdays)
+    } // Format the date as YYYY-MM-DD (year doesn't matter for birthdays)
     const monthInt = Number.parseInt(month, 10);
     const dayInt = Number.parseInt(day, 10);
 
@@ -124,7 +122,7 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
       birthdate,
     });
 
-    const formattedDate = `${month}/${day}`;
+    const formattedDate = `${day}/${month}`;
     const nameInfo = displayName ? ` with display name "${displayName}"` : '';
 
     await respond({
@@ -183,7 +181,7 @@ const adminListBirthdaysCommandCallback = async ({ command, ack, respond, logger
         const day = date.getDate();
         const displayName = birthday.displayName ? ` (${birthday.displayName})` : '';
         const username = birthday.username ? ` - Username: ${birthday.username}` : '';
-        return `• <@${birthday.userId}>${displayName}${username}: ${month}/${day} - ID: ${birthday.userId}`;
+        return `• <@${birthday.userId}>${displayName}${username}: ${day}/${month} - ID: ${birthday.userId}`;
       })
       .join('\n');
 

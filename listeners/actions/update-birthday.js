@@ -15,7 +15,7 @@ const updateBirthdayCallback = async ({ ack, body, client, logger }) => {
       const dateParts = existingBirthday.birthdate.split('-');
       const month = dateParts[1]; // Already padded with leading zeros
       const day = dateParts[2]; // Already padded with leading zeros
-      currentBirthdayValue = `${month}/${day}`;
+      currentBirthdayValue = `${day}/${month}`;
       currentDisplayName = existingBirthday.displayName || '';
     }
 
@@ -45,7 +45,7 @@ const updateBirthdayCallback = async ({ ack, body, client, logger }) => {
               action_id: 'birthday_value',
               placeholder: {
                 type: 'plain_text',
-                text: 'MM/DD (e.g., 12/25)',
+                text: 'DD/MM (e.g., 25/12)',
               },
               initial_value: currentBirthdayValue,
             },

@@ -32,7 +32,7 @@ const csvTemplateCommandCallback = async ({ command, ack, respond, logger }) => 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: '*Column Format:*\n• User ID: Slack user ID (starts with U)\n• Username: Slack username\n• Display Name: Name used in birthday messages (use quotes if it contains commas)\n• Month: 1-12\n• Day: 1-31',
+            text: '*Column Format:*\n• User ID: Slack user ID (starts with U)\n• Username: Slack username\n• Display Name: Name used in birthday messages (use quotes if it contains commas)\n• Day: 1-31\n• Month: 1-12',
           },
         },
         {

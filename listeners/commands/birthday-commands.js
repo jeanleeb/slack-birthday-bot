@@ -11,7 +11,7 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
     // If empty, show help
     if (!commandText) {
       await respond({
-        text: 'Please provide your birthday in MM/DD format, followed by your full name. Example: `/setbirthday 12/25 John Doe`',
+        text: 'Please provide your birthday in DD/MM format, followed by your full name. Example: `/setbirthday 25/12 John Doe`',
         response_type: 'ephemeral',
       });
       return;
@@ -32,8 +32,8 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
       displayName = commandText.substring(firstSpaceIndex + 1).trim();
     }
 
-    // Parse the date
-    const [month, day] = dateInput.split('/');
+    // Parse the date (now in DD/MM format)
+    const [day, month] = dateInput.split('/');
 
     if (
       !month ||
@@ -46,7 +46,7 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
       Number(day) > 31
     ) {
       await respond({
-        text: 'Please provide a valid date format (MM/DD). Example: `/setbirthday 12/25 John Doe`',
+        text: 'Please provide a valid date format (DD/MM). Example: `/setbirthday 25/12 John Doe`',
         response_type: 'ephemeral',
       });
       return;
@@ -78,7 +78,7 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `Your birthday will be set to *${month}/${day}*. Please provide your full name so we can properly celebrate your birthday!`,
+                text: `Your birthday will be set to *${day}/${month}*. Please provide your full name so we can properly celebrate your birthday!`,
               },
             },
             {
@@ -116,7 +116,7 @@ const setBirthdayCommandCallback = async ({ command, ack, respond, client, logge
     });
 
     await respond({
-      text: `Your birthday has been set to ${month}/${day} with display name "${displayName}"! 🎂`,
+      text: `Your birthday has been set to ${day}/${month} with display name "${displayName}"! 🎂`,
       response_type: 'ephemeral',
     });
 

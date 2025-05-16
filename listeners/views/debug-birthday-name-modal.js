@@ -32,7 +32,7 @@ const debugBirthdayNameModalCallback = async ({ ack, body, view, client, logger 
     await client.chat.postEphemeral({
       channel: userId,
       user: userId,
-      text: `Your test birthday has been set to today (${month}/${day}) with display name "${displayName}"! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
+      text: `Your test birthday has been set to today (${day}/${month}) with display name "${displayName}"! 🎂\nUse \`/debugcheckbirthdays\` to trigger the birthday messages.`,
     });
 
     logger.info(
