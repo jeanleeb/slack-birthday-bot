@@ -11,9 +11,10 @@ const updateBirthdayCallback = async ({ ack, body, client, logger }) => {
     let currentDisplayName = '';
 
     if (existingBirthday) {
-      const date = new Date(existingBirthday.birthdate);
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
+      // Extract month and day directly from the date string to avoid timezone issues
+      const dateParts = existingBirthday.birthdate.split('-');
+      const month = dateParts[1]; // Already padded with leading zeros
+      const day = dateParts[2]; // Already padded with leading zeros
       currentBirthdayValue = `${month}/${day}`;
       currentDisplayName = existingBirthday.displayName || '';
     }

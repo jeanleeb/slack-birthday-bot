@@ -8,10 +8,10 @@ const debugBirthdayNameModalCallback = async ({ ack, body, view, client, logger 
     // Get the birthdate from private_metadata (passed from the command)
     const birthdate = view.private_metadata;
 
-    // Format month/day for display
-    const birthdateObj = new Date(birthdate);
-    const month = (birthdateObj.getMonth() + 1).toString().padStart(2, '0');
-    const day = birthdateObj.getDate().toString().padStart(2, '0');
+    // Format month/day for display - extract directly from the date string
+    const dateParts = birthdate.split('-');
+    const month = dateParts[1]; // Already padded with leading zeros
+    const day = dateParts[2]; // Already padded with leading zeros
 
     // Get user info
     const userId = body.user.id;

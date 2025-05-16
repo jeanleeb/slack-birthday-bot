@@ -28,9 +28,10 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
 
     // Calculate days until birthday for each user
     const birthdaysWithDaysUntil = birthdays.map((birthday) => {
-      const date = new Date(birthday.birthdate);
-      const birthMonth = date.getMonth() + 1;
-      const birthDay = date.getDate();
+      // Extract month and day directly from the date string to avoid timezone issues
+      const dateParts = birthday.birthdate.split('-');
+      const birthMonth = Number.parseInt(dateParts[1], 10); // Convert to number
+      const birthDay = Number.parseInt(dateParts[2], 10); // Convert to number
 
       // Create date objects for comparison
       const thisYearBirthday = new Date(today.getFullYear(), birthMonth - 1, birthDay);

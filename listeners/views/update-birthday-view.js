@@ -10,7 +10,16 @@ const updateBirthdayViewCallback = async ({ ack, body, view, client, logger }) =
     const [month, day] = birthdayValue.split('/');
 
     // Validate the input
-    if (!month || !day || Number.isNaN(month) || Number.isNaN(day) || month < 1 || month > 12 || day < 1 || day > 31) {
+    if (
+      !month ||
+      !day ||
+      Number.isNaN(Number(month)) ||
+      Number.isNaN(Number(day)) ||
+      Number(month) < 1 ||
+      Number(month) > 12 ||
+      Number(day) < 1 ||
+      Number(day) > 31
+    ) {
       // Acknowledge with an error
       await ack({
         response_action: 'errors',
@@ -22,7 +31,11 @@ const updateBirthdayViewCallback = async ({ ack, body, view, client, logger }) =
     }
 
     // Format the date as YYYY-MM-DD (year doesn't matter for birthdays)
-    const birthdate = `2000-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    const monthInt = Number.parseInt(month, 10);
+    const dayInt = Number.parseInt(day, 10);
+
+    // Store the date in a consistent format that won't be affected by timezone
+    const birthdate = `2000-${monthInt.toString().padStart(2, '0')}-${dayInt.toString().padStart(2, '0')}`;
 
     // Get the user ID
     const userId = body.user.id;

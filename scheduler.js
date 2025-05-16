@@ -12,14 +12,16 @@ function setupBirthdayScheduler(app) {
 
       // Get today's date
       const today = new Date();
-      const month = today.getMonth() + 1; // JavaScript months are 0-indexed
-      const day = today.getDate();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0'); // JavaScript months are 0-indexed
+      const day = today.getDate().toString().padStart(2, '0');
+
+      app.logger.info(`Checking for birthdays on ${month}/${day}...`);
 
       // Find users whose birthdays are today
       const birthdays = await Birthday.findAll({
         where: sequelize.literal(`
-          strftime('%m', birthdate) = '${month.toString().padStart(2, '0')}' AND 
-          strftime('%d', birthdate) = '${day.toString().padStart(2, '0')}'
+          strftime('%m', birthdate) = '${month}' AND 
+          strftime('%d', birthdate) = '${day}'
         `),
       });
 

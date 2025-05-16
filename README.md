@@ -72,6 +72,13 @@ Join the [Slack Developer Program](https://api.slack.com/developer-program) for 
 
 The bot uses a SQLite database to store birthdays and configuration. Every day at 9:00 AM, it checks if any users have a birthday on that day and sends a celebratory message to the configured channel.
 
+### Date Handling
+
+The bot uses a timezone-aware approach to handle dates properly:
+- Birthdays are stored in a consistent YYYY-MM-DD format
+- Date processing avoids timezone conversion issues
+- The scheduler correctly matches stored dates regardless of server timezone
+
 ### Admin Permissions
 
 To restrict who can use admin commands:

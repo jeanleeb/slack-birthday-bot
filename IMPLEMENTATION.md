@@ -78,4 +78,27 @@ for actual birthdays:
 2. Use `/debugcheckbirthdays` to manually trigger the birthday check
 3. Verify the birthday message appears in the configured channel
 
+## Recent Updates
+
+### Timezone Handling Fix
+To address an issue where birthdays were being saved to the previous day due to timezone conversions:
+
+1. **Direct Date String Processing**
+   - Modified date handling to avoid timezone conversion issues by directly parsing and storing date components
+   - Fixed date extraction from the database to use consistent string formatting
+   - Ensured date comparisons in the birthday scheduler correctly match stored dates
+   - Enhanced date validation with proper numeric parsing
+
+2. **Timezone-Aware Approach**
+   - Ensured consistency in date displays across the app
+   - Applied fixes in all date-handling code including:
+     - Birthday commands
+     - Admin commands
+     - Scheduler
+     - App Home interface
+     - Debug commands
+     - Birthday modals
+
+By using direct string manipulation for dates rather than JavaScript Date objects where timezone conversion could occur, we've ensured that birthdays are stored and displayed correctly regardless of the server's timezone.
+
 The app is now ready for deployment to a Slack workspace!

@@ -96,7 +96,11 @@ const adminSetBirthdayCommandCallback = async ({ command, ack, respond, client, 
     }
 
     // Format the date as YYYY-MM-DD (year doesn't matter for birthdays)
-    const birthdate = `2000-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    const monthInt = Number.parseInt(month, 10);
+    const dayInt = Number.parseInt(day, 10);
+
+    // Store the date in a consistent format that won't be affected by timezone
+    const birthdate = `2000-${monthInt.toString().padStart(2, '0')}-${dayInt.toString().padStart(2, '0')}`;
 
     // Extract the display name (everything after the date)
     const displayName = parts.slice(2).join(' ').trim() || null;
