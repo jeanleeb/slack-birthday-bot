@@ -1,86 +1,89 @@
-# Bolt for JavaScript Template App
+# Slack Birthday Bot
 
-This is a generic Bolt for JavaScript template app used to build out Slack apps.
+A Slack bot that tracks birthdays of workspace members and sends automatic birthday messages.
 
-## Setup
+## Features
+
+- 🎂 Save birthdays for all workspace members
+- 👤 Set display names for personalized birthday messages
+- 📅 Automatically send birthday messages to a channel of choice
+- 📋 List all saved birthdays
+- 🔜 See upcoming birthdays
+- 🔄 Update or remove birthdays
+
+## Slack Commands
+
+| Command             | Description                                          | Example                         |
+|---------------------|------------------------------------------------------|----------------------------------|
+| `/setbirthday`      | Set your birthday date with optional display name    | `/setbirthday 12/25 John Doe`    |
+| `/setname`          | Update your display name without changing your date  | `/setname John Doe`              |
+| `/birthdaychannel`  | Set the channel for birthday announcements           | `/birthdaychannel general`       |
+| `/listbirthdays`    | Show a list of all saved birthdays                   | `/listbirthdays`                 |
+| `/nextbirthdays`    | Show the next 5 upcoming birthdays                   | `/nextbirthdays`                 |
+| `/removebirthday`   | Remove your birthday from the system                 | `/removebirthday`                |
+
+### Admin Commands
+
+| Command                 | Description                                     | Example                                    |
+|-------------------------|-------------------------------------------------|--------------------------------------------|
+| `/adminsetbirthday`     | Set a birthday for another user                 | `/adminsetbirthday @user 12/25 John Doe`   |
+| `/adminlistbirthdays`   | Get detailed list of all birthdays              | `/adminlistbirthdays`                      |
+| `/adminremovebirthday`  | Remove a birthday for another user              | `/adminremovebirthday @user`               |
+| `/adminbulkremove`     | Remove birthdays for multiple users at once      | `/adminbulkremove`                       |
+| `/adminimportbirthdays` | Import multiple birthdays from CSV              | `/adminimportbirthdays`                    |
+| `/manageadmins`         | Manage who has admin privileges                 | `/manageadmins add @user`                  |
+| `/validatecsv`          | Validate CSV data before importing              | `/validatecsv`                             |
+| `/csvtemplate`          | Get a CSV template for importing birthdays      | `/csvtemplate`                             |
+
+### Debug Commands
+
+| Command                | Description                                          | Example                     |
+|------------------------|------------------------------------------------------|----------------------------|
+| `/debugcheckbirthdays` | Manually trigger the birthday check                  | `/debugcheckbirthdays`      |
+| `/debugsettoday`       | Set your birthday to today's date for testing        | `/debugsettoday`            |
 
 Before getting started, make sure you have a development workspace where you have permissions to install apps. If you don’t have one setup, go ahead and [create one](https://slack.com/create).
 
 ### Developer Program
 Join the [Slack Developer Program](https://api.slack.com/developer-program) for exclusive access to sandbox environments for building and testing your apps, tooling, and resources created to help you build and grow.
 
-## Installation
+## Setup Instructions
 
-#### Create a Slack App
-1. Open [https://api.slack.com/apps/new](https://api.slack.com/apps/new) and choose "From an app manifest"
-2. Choose the workspace you want to install the application to
-3. Copy the contents of [manifest.json](./manifest.json) into the text box that says `*Paste your manifest code here*` (within the JSON tab) and click *Next*
-4. Review the configuration and click *Create*
-5. Click *Install to Workspace* and *Allow* on the screen that follows. You'll then be redirected to the App Configuration dashboard.
+1. Create a new Slack app in the [Slack API Console](https://api.slack.com/apps)
+2. Add the following Bot Token Scopes:
+   - `channels:read`
+   - `chat:write`
+   - `commands`
+   - `users:read`
+3. Create the slash commands in the Slack API Console
+4. Install the app to your workspace
+5. Set the following environment variables:
+   ```
+   SLACK_BOT_TOKEN=xoxb-your-token
+   SLACK_APP_TOKEN=xapp-your-app-token
+   ```
+6. Run the app:
+   ```
+   npm install
+   npm start
+   ```
 
-#### Environment Variables
-Before you can run the app, you'll need to store some environment variables.
+## How It Works
 
-1. Rename `.env.sample` to `.env`
-2. Open your apps configuration page from [this list](https://api.slack.com/apps), click *OAuth & Permissions* in the left hand menu, then copy the *Bot User OAuth Token* into your `.env` file under `SLACK_BOT_TOKEN`
-3. Click *Basic Information* from the left hand menu and follow the steps in the *App-Level Tokens* section to create an app-level token with the `connections:write` scope. Copy that token into your `.env` as `SLACK_APP_TOKEN`.
+The bot uses a SQLite database to store birthdays and configuration. Every day at 9:00 AM, it checks if any users have a birthday on that day and sends a celebratory message to the configured channel.
 
-### Setup Your Local Project
-```zsh
-# Clone this project onto your machine
-git clone https://github.com/slack-samples/bolt-js-starter-template.git
+### Admin Permissions
 
-# Change into this project directory
-cd bolt-js-starter-template
+To restrict who can use admin commands:
 
-# Install dependencies
-npm install
+1. Edit the `utils/permissions.js` file
+2. Add Slack user IDs to the `ADMIN_USER_IDS` array:
+   ```javascript
+   const ADMIN_USER_IDS = [
+     'U12345678', // Replace with actual user IDs
+     'U87654321',
+   ];
+   ```
+3. Only users with IDs in this list will be able to use admin commands
 
-# Run Bolt server
-npm start
-```
-
-#### Linting
-```zsh
-# Run lint for code formatting and linting
-npm run lint
-```
-
-## Project Structure
-
-### `manifest.json`
-
-`manifest.json` is a configuration for Slack apps. With a manifest, you can create an app with a pre-defined configuration, or adjust the configuration of an existing app.
-
-### `app.js`
-
-`app.js` is the entry point for the application and is the file you'll run to start the server. This project aims to keep this file as thin as possible, primarily using it as a way to route inbound requests.
-
-### `/listeners`
-
-Every incoming request is routed to a "listener". Inside this directory, we group each listener based on the Slack Platform feature used, so `/listeners/shortcuts` handles incoming [Shortcuts](https://api.slack.com/interactivity/shortcuts) requests, `/listeners/views` handles [View submissions](https://api.slack.com/reference/interaction-payloads/views#view_submission) and so on.
-
-
-## App Distribution / OAuth
-
-Only implement OAuth if you plan to distribute your application across multiple workspaces. A separate `app-oauth.js` file can be found with relevant OAuth settings.
-
-When using OAuth, Slack requires a public URL where it can send requests. In this template app, we've used [`ngrok`](https://ngrok.com/download). Checkout [this guide](https://ngrok.com/docs#getting-started-expose) for setting it up.
-
-Start `ngrok` to access the app on an external network and create a redirect URL for OAuth. 
-
-```
-ngrok http 3000
-```
-
-This output should include a forwarding address for `http` and `https` (we'll use `https`). It should look something like the following:
-
-```
-Forwarding   https://3cb89939.ngrok.io -> http://localhost:3000
-```
-
-Navigate to **OAuth & Permissions** in your app configuration and click **Add a Redirect URL**. The redirect URL should be set to your `ngrok` forwarding address with the `slack/oauth_redirect` path appended. For example:
-
-```
-https://3cb89939.ngrok.io/slack/oauth_redirect
-```
+The code in this project uses the Bolt for JavaScript framework to create a Slack app. For more information about Bolt for JavaScript, see [bolt js](https://api.slack.com/start/bolt/node-js).

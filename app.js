@@ -1,6 +1,9 @@
 const { App, LogLevel } = require('@slack/bolt');
 const { config } = require('dotenv');
 const { registerListeners } = require('./listeners');
+const { setupBirthdayScheduler } = require('./scheduler');
+const { testConnection } = require('./database/db');
+const { initDatabase } = require('./database/models');
 
 config();
 
@@ -15,12 +18,20 @@ const app = new App({
 /** Register Listeners */
 registerListeners(app);
 
-/** Start the Bolt App */
+/** Initialize Database and Start the App */
 (async () => {
   try {
+    // Initialize and test database connection
+    await testConnection();
+    await initDatabase();
+
+    // Setup birthday scheduler
+    setupBirthdayScheduler(app);
+
+    // Start the app
     await app.start();
-    app.logger.info('⚡️ Bolt app is running!');
+    app.logger.info('⚡️ Birthday Bot is running!');
   } catch (error) {
-    app.logger.error('Failed to start the app', error);
+    console.error('Failed to start the app', error);
   }
 })();
