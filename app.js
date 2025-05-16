@@ -8,12 +8,26 @@ const { initDatabase } = require('./database/models');
 config();
 
 /** Initialization */
-const app = new App({
+// Check if we should use Socket Mode or HTTP mode
+const useSocketMode = !process.env.SLACK_REQUEST_URL || process.env.SLACK_REQUEST_URL.trim() === '';
+
+const appConfig = {
   token: process.env.SLACK_BOT_TOKEN,
-  socketMode: true,
-  appToken: process.env.SLACK_APP_TOKEN,
   logLevel: LogLevel.DEBUG,
-});
+};
+
+// Configure either Socket Mode or HTTP mode based on environment
+if (useSocketMode) {
+  appConfig.socketMode = true;
+  appConfig.appToken = process.env.SLACK_APP_TOKEN;
+  console.log('Starting in Socket Mode');
+} else {
+  appConfig.signingSecret = process.env.SLACK_SIGNING_SECRET;
+  appConfig.port = process.env.PORT || 3000;
+  console.log(`Starting in HTTP mode with Request URL: ${process.env.SLACK_REQUEST_URL}`);
+}
+
+const app = new App(appConfig);
 
 /** Register Listeners */
 registerListeners(app);

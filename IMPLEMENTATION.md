@@ -100,4 +100,20 @@ To address an issue where birthdays were being saved to the previous day due to 
 
 By using direct string manipulation for dates rather than JavaScript Date objects where timezone conversion could occur, we've ensured that birthdays are stored and displayed correctly regardless of the server's timezone.
 
+### Flexible Deployment Support
+
+The bot now supports both Socket Mode and HTTP mode for deployment:
+
+1. **Socket Mode** (Default)
+   - Uses WebSocket connection - no public URL needed
+   - Perfect for free hosting services or local development
+   - Requires `SLACK_BOT_TOKEN` and `SLACK_APP_TOKEN`
+
+2. **HTTP Mode**
+   - Uses traditional HTTP endpoints
+   - Requires a public URL for your app
+   - Uses `SLACK_BOT_TOKEN`, `SLACK_SIGNING_SECRET`, and `SLACK_REQUEST_URL`
+
+The bot automatically detects which mode to use based on whether `SLACK_REQUEST_URL` is provided. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+
 The app is now ready for deployment to a Slack workspace!

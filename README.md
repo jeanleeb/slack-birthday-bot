@@ -104,3 +104,4 @@ The following documentation files provide details about recent changes and impro
 - [CHANNEL-IMPROVEMENTS.md](CHANNEL-IMPROVEMENTS.md) - Details about improvements to channel selection
 - [MESSAGE-FORMAT-CHANGE.md](MESSAGE-FORMAT-CHANGE.md) - Information about message format changes
 - [IMPLEMENTATION.md](IMPLEMENTATION.md) - General implementation details and commands
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Guide for deploying the bot using Socket Mode or HTTP mode
