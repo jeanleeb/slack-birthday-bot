@@ -6,6 +6,7 @@ const { validateCsvModalCallback } = require('./validate-csv-modal');
 const { removeBirthdayConfirmationCallback } = require('./remove-birthday-confirmation');
 const { adminRemoveBirthdayConfirmationCallback } = require('./admin-remove-birthday-confirmation');
 const { bulkRemoveBirthdaysModalCallback } = require('./bulk-remove-birthdays-modal');
+const { bulkSetBirthdaysModalCallback, handlePagination } = require('./bulk-set-birthdays-modal');
 const { birthdayChannelModalCallback } = require('./birthday-channel-modal');
 
 module.exports.register = (app) => {
@@ -17,5 +18,10 @@ module.exports.register = (app) => {
   app.view('remove_birthday_confirmation_modal', removeBirthdayConfirmationCallback);
   app.view('admin_remove_birthday_confirmation_modal', adminRemoveBirthdayConfirmationCallback);
   app.view('bulk_remove_birthdays_modal', bulkRemoveBirthdaysModalCallback);
+  app.view('bulk_set_birthdays_modal', bulkSetBirthdaysModalCallback);
   app.view('birthday_channel_modal', birthdayChannelModalCallback);
+  
+  // Register pagination actions for bulk set birthdays modal
+  app.action('prev_page', handlePagination);
+  app.action('next_page', handlePagination);
 };

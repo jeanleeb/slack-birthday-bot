@@ -28,7 +28,8 @@ A Slack bot that tracks birthdays of workspace members and sends automatic birth
 | `/adminsetbirthday`     | Set a birthday for another user                 | `/adminsetbirthday @user 25/12 John Doe`   |
 | `/adminlistbirthdays`   | Get detailed list of all birthdays              | `/adminlistbirthdays`                      |
 | `/adminremovebirthday`  | Remove a birthday for another user              | `/adminremovebirthday @user`               |
-| `/adminbulkremove`     | Remove birthdays for multiple users at once      | `/adminbulkremove`                       |
+| `/adminbulkremove`      | Remove birthdays for multiple users at once     | `/adminbulkremove`                         |
+| `/adminbulkset`         | Set the same birthday for multiple users        | `/adminbulkset`                            |
 | `/adminimportbirthdays` | Import multiple birthdays from CSV              | `/adminimportbirthdays`                    |
 | `/manageadmins`         | Manage who has admin privileges                 | `/manageadmins add @user`                  |
 | `/validatecsv`          | Validate CSV data before importing              | `/validatecsv`                             |

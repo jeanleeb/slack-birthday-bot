@@ -16,6 +16,7 @@ const {
 const { manageAdminsCommandCallback } = require('./admin-management');
 const { csvTemplateCommandCallback, validateCsvCommandCallback } = require('./validation-commands');
 const { adminBulkRemoveBirthdaysCommandCallback } = require('./admin-bulk-commands');
+const { adminBulkSetBirthdaysCommandCallback } = require('./admin-bulk-birthday-commands');
 
 module.exports.register = (app) => {
   app.command('/sample-command', sampleCommandCallback);
@@ -40,6 +41,7 @@ module.exports.register = (app) => {
 
   // Register bulk admin commands
   app.command('/adminbulkremove', adminBulkRemoveBirthdaysCommandCallback);
+  app.command('/adminbulkset', adminBulkSetBirthdaysCommandCallback);
 
   // Register debug commands
   app.command('/debugcheckbirthdays', debugCheckBirthdaysCommandCallback);
