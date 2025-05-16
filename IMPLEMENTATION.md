@@ -12,7 +12,7 @@ The Slack Birthday Bot has been successfully implemented with the following feat
 ## Commands Implemented
 - `/setbirthday DD/MM [Name]` - Set your birthday with optional display name
 - `/setname Your Name` - Update your display name without changing date
-- `/birthdaychannel channel-name` - Set the birthday announcement channel
+- `/birthdaychannel` - Set the birthday announcement channel (opens a channel selector)
 - `/listbirthdays` - List all saved birthdays
 - `/nextbirthdays` - Show upcoming birthdays
 - `/removebirthday` - Remove your birthday

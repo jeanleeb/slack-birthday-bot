@@ -217,7 +217,16 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `Birthday messages will be sent to *#${birthdayChannel}*\nTo change this, use the command \`/birthdaychannel channel-name\`.`,
+          text: `Birthday messages will be sent to *#${birthdayChannel}*`,
+        },
+        accessory: {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            text: 'Change Channel',
+            emoji: true,
+          },
+          action_id: 'set_birthday_channel',
         },
       },
       {
@@ -262,7 +271,7 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '• `/setbirthday DD/MM` - Set your birthday\n• `/birthdaychannel channel-name` - Set the birthday announcement channel\n• `/listbirthdays` - List all saved birthdays\n• `/nextbirthdays` - Show upcoming birthdays\n• `/removebirthday` - Remove your birthday',
+          text: '• `/setbirthday DD/MM` - Set your birthday\n• `/birthdaychannel` - Set the birthday announcement channel\n• `/listbirthdays` - List all saved birthdays\n• `/nextbirthdays` - Show upcoming birthdays\n• `/removebirthday` - Remove your birthday',
         },
       },
     );

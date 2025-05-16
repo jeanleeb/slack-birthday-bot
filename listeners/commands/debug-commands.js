@@ -38,13 +38,27 @@ const debugCheckBirthdaysCommandCallback = async ({ command, ack, respond, clien
       return;
     }
 
-    // Get the configured birthday channel
-    const config = await Config.findByPk('birthdayChannel');
-    const channel = config ? config.value : 'general';
+    // Get the configured birthday channel - prioritize using channelId if available
+    const channelIdConfig = await Config.findByPk('birthdayChannelId');
+    const channelNameConfig = await Config.findByPk('birthdayChannel');
+
+    // Try to use channel ID first (more reliable), fall back to channel name, then to 'general' as default
+    let channel = 'general';
+    let channelName = 'general';
+
+    if (channelIdConfig && channelIdConfig.value) {
+      channel = channelIdConfig.value;
+      channelName = channelNameConfig ? channelNameConfig.value : 'unknown';
+      logger.info(`Using channel ID: ${channel} (${channelName})`);
+    } else if (channelNameConfig && channelNameConfig.value) {
+      channel = channelNameConfig.value;
+      channelName = channel;
+      logger.info(`Using channel name: ${channel}`);
+    }
 
     // Send a summary to the command invoker
     await respond({
-      text: `Found ${birthdays.length} birthdays today! Sending messages to #${channel}`,
+      text: `Found ${birthdays.length} birthdays today! Sending messages to #${channelName}`,
       response_type: 'ephemeral',
     });
 

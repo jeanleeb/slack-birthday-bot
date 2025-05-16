@@ -7,6 +7,7 @@ const { validateCsvModalCallback } = require('./validate-csv-modal');
 const { removeBirthdayConfirmationCallback } = require('./remove-birthday-confirmation');
 const { adminRemoveBirthdayConfirmationCallback } = require('./admin-remove-birthday-confirmation');
 const { bulkRemoveBirthdaysModalCallback } = require('./bulk-remove-birthdays-modal');
+const { birthdayChannelModalCallback } = require('./birthday-channel-modal');
 
 module.exports.register = (app) => {
   app.view('sample_view_id', sampleViewCallback);
@@ -18,4 +19,5 @@ module.exports.register = (app) => {
   app.view('remove_birthday_confirmation_modal', removeBirthdayConfirmationCallback);
   app.view('admin_remove_birthday_confirmation_modal', adminRemoveBirthdayConfirmationCallback);
   app.view('bulk_remove_birthdays_modal', bulkRemoveBirthdaysModalCallback);
+  app.view('birthday_channel_modal', birthdayChannelModalCallback);
 };

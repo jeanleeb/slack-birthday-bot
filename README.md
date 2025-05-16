@@ -17,7 +17,7 @@ A Slack bot that tracks birthdays of workspace members and sends automatic birth
 |---------------------|------------------------------------------------------|----------------------------------|
 | `/setbirthday`      | Set your birthday date with optional display name    | `/setbirthday 25/12 John Doe`    |
 | `/setname`          | Update your display name without changing your date  | `/setname John Doe`              |
-| `/birthdaychannel`  | Set the channel for birthday announcements           | `/birthdaychannel general`       |
+| `/birthdaychannel`  | Set the channel for birthday announcements           | `/birthdaychannel`               |
 | `/listbirthdays`    | Show a list of all saved birthdays                   | `/listbirthdays`                 |
 | `/nextbirthdays`    | Show the next 5 upcoming birthdays                   | `/nextbirthdays`                 |
 | `/removebirthday`   | Remove your birthday from the system                 | `/removebirthday`                |

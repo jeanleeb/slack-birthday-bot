@@ -137,60 +137,60 @@ const setBirthdayChannelCommandCallback = async ({ command, ack, respond, client
   try {
     await ack();
 
-    // Get the channel name (remove # if present)
-    let channelName = command.text.trim();
-    if (channelName.startsWith('#')) {
-      channelName = channelName.substring(1);
-    }
-
-    if (!channelName) {
-      await respond({
-        text: 'Please provide a valid channel name. For example: `/birthdaychannel general`',
-        response_type: 'ephemeral',
-      });
-      return;
-    }
-
-    // Verify the channel exists
-    try {
-      const result = await client.conversations.list({
-        exclude_archived: true,
-        types: 'public_channel,private_channel',
-      });
-
-      const channel = result.channels.find((c) => c.name === channelName);
-
-      if (!channel) {
-        await respond({
-          text: `Channel #${channelName} not found. Please check the channel name and try again.`,
-          response_type: 'ephemeral',
-        });
-        return;
-      }
-
-      // Save the channel configuration
-      await Config.upsert({
-        key: 'birthdayChannel',
-        value: channelName,
-      });
-
-      await respond({
-        text: `Birthday announcements will now be sent to #${channelName}! 🎉`,
-        response_type: 'ephemeral',
-      });
-
-      logger.info(`Birthday channel set to #${channelName} by ${command.user_name}`);
-    } catch (error) {
-      logger.error('Error verifying channel:', error);
-      await respond({
-        text: "Sorry, I couldn't verify that channel. Please check if the bot has access to it.",
-        response_type: 'ephemeral',
-      });
-    }
+    // Open a modal with a channel select element for better UX
+    await client.views.open({
+      trigger_id: command.trigger_id,
+      view: {
+        type: 'modal',
+        callback_id: 'birthday_channel_modal',
+        title: {
+          type: 'plain_text',
+          text: 'Set Birthday Channel',
+        },
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: 'Select the channel where birthday announcements should be posted:',
+            },
+          },
+          {
+            type: 'input',
+            block_id: 'channel_block',
+            element: {
+              type: 'channels_select',
+              action_id: 'channel_select',
+              placeholder: {
+                type: 'plain_text',
+                text: 'Select a channel',
+              },
+            },
+            label: {
+              type: 'plain_text',
+              text: 'Birthday Announcement Channel',
+            },
+          },
+          {
+            type: 'context',
+            elements: [
+              {
+                type: 'mrkdwn',
+                text: '👉 Make sure to invite me to the channel first using `/invite @slack-birthday-bot`',
+              },
+            ],
+          },
+        ],
+        submit: {
+          type: 'plain_text',
+          text: 'Save',
+        },
+      },
+    });
   } catch (error) {
-    logger.error('Error in setBirthdayChannelCommand:', error);
+    logger.error('Error opening channel selection modal:', error);
     await respond({
-      text: 'Sorry, there was an error setting the birthday channel. Please try again.',
+      text: 'Sorry, there was an error opening the channel selection. Please try again.',
       response_type: 'ephemeral',
     });
   }

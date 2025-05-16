@@ -118,9 +118,11 @@
                 "channels:history",
                 "channels:read",
                 "chat:write",
+                "chat:write.public",
                 "commands",
                 "groups:read",
-                "users:read"
+                "users:read",
+                "channels:join"
             ]
         }
     },
