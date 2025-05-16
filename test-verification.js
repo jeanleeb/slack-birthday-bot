@@ -1,10 +1,10 @@
 // Test script for Slack verification challenge
 // This script simulates a verification request from Slack to test our handling
 
-const http = require('http');
+const http = require('node.http');
 
 // Define the test challenge value
-const challenge = 'test_challenge_value_' + Math.floor(Math.random() * 1000);
+const challenge = `test_challenge_value_${Math.floor(Math.random() * 1000)}`;
 
 // Create options for the HTTP request
 const options = {

@@ -3,7 +3,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
+const http = require('node.http');
 
 console.log('🧪 Slack Verification Challenge Test');
 console.log('===================================');

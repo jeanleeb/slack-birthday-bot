@@ -25,7 +25,7 @@ const csvTemplateCommandCallback = async ({ command, ack, respond, logger }) => 
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: '```\n' + template + '\n```',
+            text: `\`\`\`\n${template}\n\`\`\``,
           },
         },
         {

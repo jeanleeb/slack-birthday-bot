@@ -62,11 +62,11 @@ function setupBirthdayScheduler(app) {
       let channel = 'general';
       let channelName = 'general';
 
-      if (channelIdConfig && channelIdConfig.value) {
+      if (channelIdConfig?.value) {
         channel = channelIdConfig.value;
         channelName = channelNameConfig ? channelNameConfig.value : 'unknown';
         app.logger.info(`Using channel ID: ${channel} (${channelName})`);
-      } else if (channelNameConfig && channelNameConfig.value) {
+      } else if (channelNameConfig?.value) {
         channel = channelNameConfig.value;
         channelName = channel;
         app.logger.info(`Using channel name: ${channel}`);

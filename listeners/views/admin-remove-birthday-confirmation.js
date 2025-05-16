@@ -55,7 +55,7 @@ const adminRemoveBirthdayConfirmationCallback = async ({ ack, body, view, client
     try {
       await client.chat.postMessage({
         channel: targetUserId,
-        text: `Your birthday has been removed by an administrator. If you would like to set it again, you can use the \`/setbirthday\` command.`,
+        text: 'Your birthday has been removed by an administrator. If you would like to set it again, you can use the `/setbirthday` command.',
       });
     } catch (err) {
       logger.warn(`Could not notify user ${targetUserId} about birthday removal: ${err.message}`);

@@ -65,7 +65,7 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
     if (nextBirthdays.length > 0) {
       if (userIsAdmin) {
         // For admins, show removal buttons next to each birthday
-        nextBirthdays.forEach((birthday) => {
+        for (const birthday of nextBirthdays) {
           let birthdayText;
           if (birthday.daysUntil === 0) {
             birthdayText = `<@${birthday.userId}>: *TODAY!* 🎉`;
@@ -93,7 +93,7 @@ const appHomeOpenedCallback = async ({ client, event, logger }) => {
               style: 'danger',
             },
           });
-        });
+        }
       } else {
         // For regular users, just show the text
         upcomingBirthdaysText = nextBirthdays

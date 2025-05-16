@@ -70,11 +70,11 @@ const debugCheckBirthdaysCommandCallback = async ({ command, ack, respond, clien
     let channel = 'general';
     let channelName = 'general';
 
-    if (channelIdConfig && channelIdConfig.value) {
+    if (channelIdConfig?.value) {
       channel = channelIdConfig.value;
       channelName = channelNameConfig ? channelNameConfig.value : 'unknown';
       logger.info(`Using channel ID: ${channel} (${channelName})`);
-    } else if (channelNameConfig && channelNameConfig.value) {
+    } else if (channelNameConfig?.value) {
       channel = channelNameConfig.value;
       channelName = channel;
       logger.info(`Using channel name: ${channel}`);

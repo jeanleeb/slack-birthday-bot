@@ -70,7 +70,7 @@ const birthdayChannelModalCallback = async ({ ack, body, view, client, logger })
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Birthday Bot Configuration*`,
+              text: '*Birthday Bot Configuration*',
             },
           },
           {
@@ -108,7 +108,7 @@ const birthdayChannelModalCallback = async ({ ack, body, view, client, logger })
       await client.chat.postEphemeral({
         channel: body.user.id,
         user: body.user.id,
-        text: `❌ Something went wrong while setting the birthday channel. Please try again.`,
+        text: '❌ Something went wrong while setting the birthday channel. Please try again.',
       });
     } catch (notifyError) {
       logger.error('Failed to notify user of error:', notifyError);
